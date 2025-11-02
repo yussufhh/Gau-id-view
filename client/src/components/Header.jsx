@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-[#00923F] text-white py-2 text-sm">
+      <div className="bg-[#00923F] text-white py-4 text-sm">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-2">
@@ -22,10 +22,13 @@ const Header = () => {
               <span>info@gau.ac.ke</span>
             </div>
           </div>
-          <div className="flex items-center space-x-6">
-            <span>ELEARNING</span>
-            <span>STUDENT PORTAL</span>
-            <span>SUPPLY CHAIN DEPT</span>
+          <div className="flex items-center space-x-3">
+            <button className="px-4 py-2 border border-white text-white rounded hover:bg-white hover:text-[#00923F] transition-colors font-medium">
+              Login
+            </button>
+            <button className="px-4 py-2 bg-white text-[#00923F] rounded hover:bg-gray-100 transition-colors font-medium">
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
@@ -33,7 +36,7 @@ const Header = () => {
       {/* Main Header */}
       <header className="bg-white shadow-md">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-4">
+          <div className="flex items-center py-4">
             {/* Logo */}
             <div className="flex items-center space-x-4">
               <img 
@@ -47,8 +50,8 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
+            {/* Desktop Navigation - Centered */}
+            <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
               <NavLink 
                 to="/" 
                 className={({ isActive }) => 
@@ -90,16 +93,6 @@ const Header = () => {
                 Contact
               </NavLink>
             </nav>
-
-            {/* Auth Buttons - Desktop */}
-            <div className="hidden md:flex items-center space-x-4">
-              <button className="px-6 py-2 rounded-lg border border-[#00923F] text-[#00923F] hover:bg-[#00923F] hover:text-white transition-colors">
-                Login
-              </button>
-              <button className="px-6 py-2 rounded-lg bg-[#00923F] text-white hover:bg-[#007A33] transition-colors">
-                Register
-              </button>
-            </div>
 
             {/* Mobile Menu Button */}
             <button 
@@ -161,14 +154,6 @@ const Header = () => {
                 >
                   Contact
                 </NavLink>
-                <div className="flex space-x-4 pt-2">
-                  <button className="px-4 py-2 rounded-lg border border-[#00923F] text-[#00923F] hover:bg-[#00923F] hover:text-white transition-colors flex-1">
-                    Login
-                  </button>
-                  <button className="px-4 py-2 rounded-lg bg-[#00923F] text-white hover:bg-[#007A33] transition-colors flex-1">
-                    Register
-                  </button>
-                </div>
               </nav>
             </div>
           )}
