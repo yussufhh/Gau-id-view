@@ -8,6 +8,7 @@ import HowItWorks from './pages/HowItWorks'
 import Contact from './pages/Contact'
 import ProblemsPage from './pages/ProblemsPage'
 import StudentDashboard from './pages/StudentDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/problems" element={<ProblemsPage />} />
           <Route path="/dashboard" element={<StudentDashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </main>
     </div>
