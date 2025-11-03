@@ -7,6 +7,7 @@ import Features from './pages/Features'
 import HowItWorks from './pages/HowItWorks'
 import Contact from './pages/Contact'
 import ProblemsPage from './pages/ProblemsPage'
+import StudentDashboard from './pages/StudentDashboard'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/problems" element={<ProblemsPage />} />
+          <Route path="/dashboard" element={<StudentDashboard />} />
         </Routes>
       </main>
     </div>

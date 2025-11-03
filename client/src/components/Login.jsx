@@ -74,9 +74,16 @@ const Login = ({ showLogin, setShowLogin }) => {
       if (formData.registrationNumber === "ADMIN001") {
         console.log("Admin login attempt");
         alert("Admin login successful!");
+        // Redirect to admin dashboard (future implementation)
+        window.location.href = "/admin-dashboard";
       } else if (validateRegistrationNumber(formData.registrationNumber)) {
         console.log("Student login:", formData.registrationNumber);
-        alert("Student login successful!");
+        // Store login token and redirect to student dashboard
+        localStorage.setItem('token', 'student_token_' + formData.registrationNumber);
+        localStorage.setItem('user_type', 'student');
+        localStorage.setItem('user_id', formData.registrationNumber);
+        setShowLogin(false);
+        window.location.href = "/dashboard";
       } else {
         alert("Invalid registration number format!");
         return;
