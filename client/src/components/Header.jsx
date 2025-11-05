@@ -2,12 +2,14 @@
 // src/components/Header.js
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import logo from '../assets/logo.png';
 import Login from './Login';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
 
   return (
     <>
@@ -25,18 +27,40 @@ const Header = () => {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <button 
-              onClick={() => setShowLogin(true)}
-              className="px-4 py-2 border border-white text-white rounded hover:bg-white hover:text-[#00923F] transition-colors font-medium"
-            >
-              Login
-            </button>
-            <button 
-              onClick={() => setShowLogin(true)}
-              className="px-4 py-2 bg-white text-[#00923F] rounded hover:bg-gray-100 transition-colors font-medium"
-            >
-              Sign Up
-            </button>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-3">
+                <span className="text-white">
+                  Welcome, {user?.name || 'User'}
+                </span>
+                <NavLink
+                  to={user?.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
+                  className="px-4 py-2 border border-white text-white rounded hover:bg-white hover:text-[#00923F] transition-colors font-medium"
+                >
+                  Dashboard
+                </NavLink>
+                <button 
+                  onClick={logout}
+                  className="px-4 py-2 bg-white text-[#00923F] rounded hover:bg-gray-100 transition-colors font-medium"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <button 
+                  onClick={() => setShowLogin(true)}
+                  className="px-4 py-2 border border-white text-white rounded hover:bg-white hover:text-[#00923F] transition-colors font-medium"
+                >
+                  Login
+                </button>
+                <button 
+                  onClick={() => setShowLogin(true)}
+                  className="px-4 py-2 bg-white text-[#00923F] rounded hover:bg-gray-100 transition-colors font-medium"
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

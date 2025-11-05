@@ -1,0 +1,8 @@
+
+[2025-11-05 12:17:14.828662] Email to ['integration.test@student.gau.ac.ke']: 🎉 Welcome to GAU-ID-View - Your Account is Ready!
+
+[2025-11-05 12:24:23.140927] Email to ['testlogin@student.gau.ac.ke']: 🎉 Welcome to GAU-ID-View - Your Account is Ready!
+
+[2025-11-05 12:36:14.937284] Email to ['emailtest@student.gau.ac.ke']: 🎉 Welcome to GAU-ID-View - Your Account is Ready!
+
+[2025-11-05 12:37:39.013961] Email to ['finaltest@student.gau.ac.ke']: 🎉 Welcome to GAU-ID-View - Your Account is Ready!

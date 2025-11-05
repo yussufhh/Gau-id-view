@@ -14,6 +14,8 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { studentAPI } from '../services/api';
 import logo from '../assets/logo.png';
 import IDApplicationForm from '../components/IDApplicationForm';
 import ApplicationTracking from '../components/ApplicationTracking';
@@ -25,23 +27,40 @@ import SupportCenter from '../components/SupportCenter';
 const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [notifications, setNotifications] = useState(3);
-  const [studentData, setStudentData] = useState({
-    name: 'John Doe',
-    admissionNumber: 'S110/2099/23',
-    department: 'Computer Science',
-    course: 'Bachelor of Computer Science',
-    year: 'Year 3',
-    email: 'john.doe@student.gau.ac.ke',
-    phone: '+254 712 345 678'
-  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+  const { user, logout } = useAuth();
+  
+  const [studentData, setStudentData] = useState(null);
+  const [dashboardStats, setDashboardStats] = useState(null);
 
-  const [dashboardStats, setDashboardStats] = useState({
-    applicationStatus: 'Under Review',
-    notificationCount: 3,
-    idValidity: 'Active',
-    lastUpdated: '2 hours ago'
-  });
+  // Fetch student data on component mount
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      try {
+        setIsLoading(true);
+        const [profileResponse, statusResponse] = await Promise.all([
+          studentAPI.getProfile(),
+          studentAPI.getApplicationStatus()
+        ]);
+        
+        if (profileResponse.success) {
+          setStudentData(profileResponse.data);
+        }
+        
+        if (statusResponse.success) {
+          setDashboardStats(statusResponse.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch student data:', error);
+        setError('Failed to load dashboard data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStudentData();
+  }, []);
 
   const navigationItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
@@ -82,14 +101,14 @@ const StudentDashboard = () => {
     <div className="space-y-6">
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-[#00923F] to-[#007A33] text-white rounded-2xl p-8">
-        <h1 className="text-3xl font-bold mb-2">Welcome back, {studentData.name}!</h1>
+        <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name || studentData?.user?.name || 'Student'}!</h1>
         <p className="text-green-100 text-lg">
           Manage your digital student ID and track your applications easily.
         </p>
         <div className="mt-4 inline-flex items-center space-x-2 bg-white/20 px-4 py-2 rounded-lg">
-          <span className="text-sm font-medium">{studentData.admissionNumber}</span>
+          <span className="text-sm font-medium">{user?.reg_number || studentData?.user?.reg_number || 'N/A'}</span>
           <span className="text-green-200">•</span>
-          <span className="text-sm">{studentData.course}</span>
+          <span className="text-sm">{user?.department || studentData?.user?.department || 'N/A'}</span>
         </div>
       </div>
 
@@ -97,7 +116,7 @@ const StudentDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Application Status"
-          value={dashboardStats.applicationStatus}
+          value={dashboardStats?.status || studentData?.status || 'Not Applied'}
           icon={Clock}
           color="text-yellow-600"
         />
@@ -204,6 +223,37 @@ const StudentDashboard = () => {
         return <DashboardContent />;
     }
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Error Loading Dashboard</h3>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex">

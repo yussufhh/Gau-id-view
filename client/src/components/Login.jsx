@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { utils } from '../services/api';
 
 const Login = ({ showLogin, setShowLogin }) => {
   const [state, setState] = useState("login");
   const [showForgot, setShowForgot] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  
+  const { login, register } = useAuth();
   
   // Form data state
   const [formData, setFormData] = useState({
@@ -40,57 +47,89 @@ const Login = ({ showLogin, setShowLogin }) => {
     return regex.test(regNum);
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+    setIsLoading(true);
     
-    if (state === "register") {
-      // Registration validation
-      if (formData.password !== formData.confirmPassword) {
-        alert("Passwords do not match!");
-        return;
-      }
-      
-      if (!validateRegistrationNumber(formData.registrationNumber)) {
-        alert("Invalid registration number format. Use format: S110/2099/23");
-        return;
-      }
-      
-      if (!formData.school) {
-        alert("Please select your school");
-        return;
-      }
+    try {
+      if (state === "register") {
+        // Registration validation
+        if (formData.password !== formData.confirmPassword) {
+          setError("Passwords do not match!");
+          return;
+        }
+        
+        if (!validateRegistrationNumber(formData.registrationNumber)) {
+          setError("Invalid registration number format. Use format: S110/2099/23");
+          return;
+        }
+        
+        if (!formData.school) {
+          setError("Please select your school");
+          return;
+        }
 
-      console.log("Registration Data:", formData);
-      alert("Account created successfully! Please check your email for verification.");
-      setState("login");
-    } else {
-      // Login validation
-      if (!formData.registrationNumber || !formData.password) {
-        alert("Please enter registration number and password");
-        return;
-      }
+        if (!formData.email.includes('@student.gau.ac.ke') && !formData.email.includes('@gau.ac.ke')) {
+          setError("Please use your GAU email address (@student.gau.ac.ke or @gau.ac.ke)");
+          return;
+        }
 
-      // Check for admin login
-      if (formData.registrationNumber === "ADMIN001") {
-        console.log("Admin login attempt");
-        alert("Admin login successful!");
-        // Redirect to admin dashboard (future implementation)
-        window.location.href = "/admin-dashboard";
-      } else if (validateRegistrationNumber(formData.registrationNumber)) {
-        console.log("Student login:", formData.registrationNumber);
-        // Store login token and redirect to student dashboard
-        localStorage.setItem('token', 'student_token_' + formData.registrationNumber);
-        localStorage.setItem('user_type', 'student');
-        localStorage.setItem('user_id', formData.registrationNumber);
-        setShowLogin(false);
-        window.location.href = "/dashboard";
+        // Call registration API
+        const response = await register(formData);
+        
+        if (response.success) {
+          setSuccess("Account created successfully! Please check your email for verification.");
+          setTimeout(() => {
+            setState("login");
+            setSuccess('');
+          }, 2000);
+        } else {
+          setError(response.message || "Registration failed");
+        }
+        
       } else {
-        alert("Invalid registration number format!");
-        return;
+        // Login validation
+        if (!formData.registrationNumber || !formData.password) {
+          setError("Please enter registration number and password");
+          return;
+        }
+
+        if (!validateRegistrationNumber(formData.registrationNumber) && formData.registrationNumber !== "ADMIN001") {
+          setError("Invalid registration number format. Use format: S110/2099/23");
+          return;
+        }
+
+        // Call login API
+        const response = await login({
+          reg_number: formData.registrationNumber,
+          password: formData.password
+        });
+        
+        if (response.success) {
+          setSuccess("Login successful! Redirecting...");
+          setShowLogin(false);
+          
+          // Redirect based on user role
+          const user = response.data.user;
+          setTimeout(() => {
+            if (user.role === 'admin') {
+              window.location.href = "/admin/dashboard";
+            } else {
+              window.location.href = "/dashboard";
+            }
+          }, 1000);
+        } else {
+          setError(response.message || "Login failed");
+        }
       }
+    } catch (error) {
+      console.error('Auth error:', error);
+      setError(utils.formatError(error) || "An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    
-    setShowLogin(false);
   };
 
   if (!showLogin) return null;
@@ -152,6 +191,18 @@ const Login = ({ showLogin, setShowLogin }) => {
                   : "Create your GAU-ID-View account"}
               </p>
             </div>
+
+            {/* Error/Success Messages */}
+            {error && (
+              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-600 text-sm">{error}</p>
+              </div>
+            )}
+            {success && (
+              <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-green-600 text-sm">{success}</p>
+              </div>
+            )}
 
             {/* Registration Fields */}
             {state === "register" && (
@@ -329,7 +380,7 @@ const Login = ({ showLogin, setShowLogin }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00923F] focus:border-transparent"
                     required 
                   />
-                  <p className="text-xs text-gray-500 mt-1">Admin login: Use "ADMIN001"</p>
+                  <p className="text-xs text-gray-500 mt-1">Format: S110/2099/23 or ADM001 for admin</p>
                 </div>
 
                 <div>
@@ -379,9 +430,17 @@ const Login = ({ showLogin, setShowLogin }) => {
             {/* Submit Button */}
             <button 
               type="submit"
-              className="w-full bg-[#00923F] text-white py-3 rounded-lg font-semibold hover:bg-[#007A33] transition-colors mb-4"
+              disabled={isLoading}
+              className="w-full bg-[#00923F] text-white py-3 rounded-lg font-semibold hover:bg-[#007A33] transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {state === "register" ? "Create Account" : "Login"}
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  {state === "register" ? "Creating Account..." : "Logging in..."}
+                </div>
+              ) : (
+                state === "register" ? "Create Account" : "Login"
+              )}
             </button>
 
             {/* Forgot Password */}

@@ -1,0 +1,437 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Welcome to GAU-ID-View - Your Account is Ready!</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    line-height: 1.6;
+                    color: #333333;
+                    background-color: #f8fafc;
+                }
+                
+                .email-container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: #ffffff;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                    border-radius: 12px;
+                    overflow: hidden;
+                }
+                
+                .email-header {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 40px 30px;
+                    text-align: center;
+                    position: relative;
+                }
+                
+                .email-header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+                    opacity: 0.3;
+                }
+                
+                .logo-container {
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .university-logo {
+                    width: 80px;
+                    height: 80px;
+                    background-color: rgba(255, 255, 255, 0.15);
+                    border-radius: 50%;
+                    margin: 0 auto 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                    font-weight: bold;
+                    border: 3px solid rgba(255, 255, 255, 0.3);
+                }
+                
+                .university-name {
+                    font-size: 28px;
+                    font-weight: 700;
+                    margin-bottom: 8px;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                }
+                
+                .system-name {
+                    font-size: 16px;
+                    opacity: 0.95;
+                    font-weight: 300;
+                    letter-spacing: 1px;
+                }
+                
+                .email-body {
+                    padding: 40px 30px;
+                }
+                
+                .welcome-message {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: #2d3748;
+                    margin-bottom: 20px;
+                }
+                
+                .content-section {
+                    margin-bottom: 30px;
+                }
+                
+                .info-card {
+                    background-color: #f7fafc;
+                    border-left: 4px solid #667eea;
+                    padding: 20px;
+                    border-radius: 0 8px 8px 0;
+                    margin: 20px 0;
+                }
+                
+                .info-item {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 12px;
+                    font-size: 15px;
+                }
+                
+                .info-item:last-child {
+                    margin-bottom: 0;
+                }
+                
+                .info-label {
+                    font-weight: 600;
+                    color: #4a5568;
+                    min-width: 120px;
+                    display: inline-block;
+                }
+                
+                .info-value {
+                    color: #2d3748;
+                    font-weight: 500;
+                }
+                
+                .highlight-box {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 25px;
+                    border-radius: 12px;
+                    text-align: center;
+                    margin: 25px 0;
+                }
+                
+                .action-button {
+                    display: inline-block;
+                    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+                    color: white;
+                    padding: 14px 30px;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    margin: 15px 0;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+                }
+                
+                .action-button:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+                }
+                
+                .steps-container {
+                    background-color: #f7fafc;
+                    padding: 25px;
+                    border-radius: 12px;
+                    margin: 25px 0;
+                }
+                
+                .step-item {
+                    display: flex;
+                    align-items: flex-start;
+                    margin-bottom: 20px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #e2e8f0;
+                }
+                
+                .step-item:last-child {
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                    border-bottom: none;
+                }
+                
+                .step-number {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin-right: 15px;
+                    flex-shrink: 0;
+                }
+                
+                .step-content {
+                    flex: 1;
+                }
+                
+                .step-title {
+                    font-weight: 600;
+                    color: #2d3748;
+                    margin-bottom: 5px;
+                }
+                
+                .step-description {
+                    color: #718096;
+                    font-size: 14px;
+                    line-height: 1.5;
+                }
+                
+                .email-footer {
+                    background-color: #2d3748;
+                    color: #a0aec0;
+                    padding: 30px;
+                    text-align: center;
+                }
+                
+                .footer-logo {
+                    width: 50px;
+                    height: 50px;
+                    background-color: rgba(255, 255, 255, 0.1);
+                    border-radius: 50%;
+                    margin: 0 auto 15px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+                
+                .footer-content {
+                    font-size: 14px;
+                    line-height: 1.6;
+                }
+                
+                .contact-info {
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    border-top: 1px solid #4a5568;
+                }
+                
+                .social-links {
+                    margin-top: 15px;
+                }
+                
+                .social-link {
+                    display: inline-block;
+                    margin: 0 10px;
+                    color: #a0aec0;
+                    text-decoration: none;
+                    font-size: 14px;
+                }
+                
+                .divider {
+                    height: 2px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border: none;
+                    margin: 30px 0;
+                    border-radius: 2px;
+                }
+                
+                @media (max-width: 600px) {
+                    .email-container {
+                        margin: 10px;
+                        border-radius: 8px;
+                    }
+                    
+                    .email-header, .email-body, .email-footer {
+                        padding: 25px 20px;
+                    }
+                    
+                    .university-name {
+                        font-size: 24px;
+                    }
+                    
+                    .welcome-message {
+                        font-size: 18px;
+                    }
+                    
+                    .info-item {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+                    
+                    .info-label {
+                        margin-bottom: 5px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                
+        &lt;div class=&#34;email-header&#34;&gt;
+            &lt;div class=&#34;logo-container&#34;&gt;
+                &lt;div class=&#34;university-logo&#34;&gt;GAU&lt;/div&gt;
+                &lt;div class=&#34;university-name&#34;&gt;Garissa University&lt;/div&gt;
+                &lt;div class=&#34;system-name&#34;&gt;Student ID Management System&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class=&#34;email-body&#34;&gt;
+            &lt;div class=&#34;welcome-message&#34;&gt;
+                Welcome to GAU-ID-View, {{ user_data.name }}! 🎉
+            &lt;/div&gt;
+            
+            &lt;div class=&#34;content-section&#34;&gt;
+                &lt;p style=&#34;font-size: 16px; color: #4a5568; line-height: 1.6; margin-bottom: 20px;&#34;&gt;
+                    Congratulations! Your student account has been successfully created. We&#39;re excited to have you join the 
+                    Garissa University community and look forward to supporting your academic journey.
+                &lt;/p&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&#34;info-card&#34;&gt;
+                &lt;h3 style=&#34;color: #2d3748; margin-bottom: 15px; font-size: 18px;&#34;&gt;📋 Your Account Details&lt;/h3&gt;
+                &lt;div class=&#34;info-item&#34;&gt;
+                    &lt;span class=&#34;info-label&#34;&gt;👤 Full Name:&lt;/span&gt;
+                    &lt;span class=&#34;info-value&#34;&gt;{{ user_data.name }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class=&#34;info-item&#34;&gt;
+                    &lt;span class=&#34;info-label&#34;&gt;🎓 Registration No:&lt;/span&gt;
+                    &lt;span class=&#34;info-value&#34;&gt;{{ user_data.reg_number }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class=&#34;info-item&#34;&gt;
+                    &lt;span class=&#34;info-label&#34;&gt;✉️ Email Address:&lt;/span&gt;
+                    &lt;span class=&#34;info-value&#34;&gt;{{ user_data.email }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class=&#34;info-item&#34;&gt;
+                    &lt;span class=&#34;info-label&#34;&gt;🏫 Department:&lt;/span&gt;
+                    &lt;span class=&#34;info-value&#34;&gt;{{ user_data.department }}&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class=&#34;info-item&#34;&gt;
+                    &lt;span class=&#34;info-label&#34;&gt;📅 Registration Date:&lt;/span&gt;
+                    &lt;span class=&#34;info-value&#34;&gt;{{ registration_date }}&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&#34;highlight-box&#34;&gt;
+                &lt;h3 style=&#34;margin-bottom: 10px; font-size: 20px;&#34;&gt;🚀 Ready to Get Your Student ID?&lt;/h3&gt;
+                &lt;p style=&#34;margin-bottom: 20px; opacity: 0.95;&#34;&gt;
+                    Complete your profile and apply for your official student ID card through our secure portal.
+                &lt;/p&gt;
+                &lt;a href=&#34;{{ login_url }}&#34; class=&#34;action-button&#34;&gt;Access Your Portal&lt;/a&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&#34;content-section&#34;&gt;
+                &lt;h3 style=&#34;color: #2d3748; margin-bottom: 20px; font-size: 18px;&#34;&gt;📝 Next Steps to Complete Your Profile&lt;/h3&gt;
+                &lt;div class=&#34;steps-container&#34;&gt;
+                    &lt;div class=&#34;step-item&#34;&gt;
+                        &lt;div class=&#34;step-number&#34;&gt;1&lt;/div&gt;
+                        &lt;div class=&#34;step-content&#34;&gt;
+                            &lt;div class=&#34;step-title&#34;&gt;Log into Your Account&lt;/div&gt;
+                            &lt;div class=&#34;step-description&#34;&gt;Use your email address and the password you created during registration to access your student portal.&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class=&#34;step-item&#34;&gt;
+                        &lt;div class=&#34;step-number&#34;&gt;2&lt;/div&gt;
+                        &lt;div class=&#34;step-content&#34;&gt;
+                            &lt;div class=&#34;step-title&#34;&gt;Complete Your Profile&lt;/div&gt;
+                            &lt;div class=&#34;step-description&#34;&gt;Add your personal information including phone number, address, course details, and next of kin information.&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class=&#34;step-item&#34;&gt;
+                        &lt;div class=&#34;step-number&#34;&gt;3&lt;/div&gt;
+                        &lt;div class=&#34;step-content&#34;&gt;
+                            &lt;div class=&#34;step-title&#34;&gt;Upload Required Documents&lt;/div&gt;
+                            &lt;div class=&#34;step-description&#34;&gt;Upload a passport-style photograph and any required supporting documents for verification.&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class=&#34;step-item&#34;&gt;
+                        &lt;div class=&#34;step-number&#34;&gt;4&lt;/div&gt;
+                        &lt;div class=&#34;step-content&#34;&gt;
+                            &lt;div class=&#34;step-title&#34;&gt;Submit ID Application&lt;/div&gt;
+                            &lt;div class=&#34;step-description&#34;&gt;Review your information and submit your student ID card application for administrative approval.&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class=&#34;step-item&#34;&gt;
+                        &lt;div class=&#34;step-number&#34;&gt;5&lt;/div&gt;
+                        &lt;div class=&#34;step-content&#34;&gt;
+                            &lt;div class=&#34;step-title&#34;&gt;Receive Your ID Card&lt;/div&gt;
+                            &lt;div class=&#34;step-description&#34;&gt;Once approved and printed, collect your official student ID card from the designated office.&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;hr class=&#34;divider&#34;&gt;
+            
+            &lt;div class=&#34;content-section&#34;&gt;
+                &lt;h3 style=&#34;color: #2d3748; margin-bottom: 15px; font-size: 18px;&#34;&gt;📚 Important Information&lt;/h3&gt;
+                &lt;ul style=&#34;color: #4a5568; font-size: 15px; line-height: 1.7; padding-left: 20px;&#34;&gt;
+                    &lt;li style=&#34;margin-bottom: 8px;&#34;&gt;Your student ID card is required for access to university facilities and services&lt;/li&gt;
+                    &lt;li style=&#34;margin-bottom: 8px;&#34;&gt;Keep your login credentials secure and do not share them with others&lt;/li&gt;
+                    &lt;li style=&#34;margin-bottom: 8px;&#34;&gt;You will receive email notifications about your application status updates&lt;/li&gt;
+                    &lt;li style=&#34;margin-bottom: 8px;&#34;&gt;Contact the Student Services office if you need any assistance&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&#34;info-card&#34; style=&#34;border-left-color: #ed8936;&#34;&gt;
+                &lt;h3 style=&#34;color: #2d3748; margin-bottom: 15px; font-size: 18px;&#34;&gt;🔒 Security &amp; Privacy&lt;/h3&gt;
+                &lt;p style=&#34;color: #4a5568; font-size: 15px; line-height: 1.6;&#34;&gt;
+                    Your personal information is protected using industry-standard security measures. We never share your data 
+                    with third parties without your consent. If you suspect any unauthorized access to your account, please 
+                    contact us immediately.
+                &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class=&#34;email-footer&#34;&gt;
+            &lt;div class=&#34;footer-logo&#34;&gt;GAU&lt;/div&gt;
+            &lt;div class=&#34;footer-content&#34;&gt;
+                &lt;strong&gt;Garissa University&lt;/strong&gt;&lt;br&gt;
+                Student ID Management System&lt;br&gt;
+                P.O. Box 1234, Garissa, Kenya
+            &lt;/div&gt;
+            &lt;div class=&#34;contact-info&#34;&gt;
+                &lt;div style=&#34;margin-bottom: 10px;&#34;&gt;
+                    📧 &lt;a href=&#34;mailto:support@gau.ac.ke&#34; style=&#34;color: #a0aec0;&#34;&gt;support@gau.ac.ke&lt;/a&gt; | 
+                    📞 +254 123 456 789
+                &lt;/div&gt;
+                &lt;div style=&#34;font-size: 13px; opacity: 0.8; margin-top: 15px;&#34;&gt;
+                    © {{ current_year }} Garissa University. All rights reserved.
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;social-links&#34;&gt;
+                &lt;a href=&#34;#&#34; class=&#34;social-link&#34;&gt;Website&lt;/a&gt;
+                &lt;a href=&#34;#&#34; class=&#34;social-link&#34;&gt;Student Portal&lt;/a&gt;
+                &lt;a href=&#34;#&#34; class=&#34;social-link&#34;&gt;Help Center&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        
+            </div>
+        </body>
+        </html>
+        
